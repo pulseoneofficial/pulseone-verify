@@ -114,7 +114,6 @@
   }
   .status-line{margin-top:12px;font-size:14px;color:var(--muted);max-width:460px;margin-left:auto;margin-right:auto}
   .status-line b{color:var(--ok);font-weight:600}
-  .status-line b.warn{color:#fbbf24}
 
   /* 通用验证统计 */
   .stats{
@@ -214,10 +213,6 @@
         <div class="k" data-i18n="s_status_k">Verification Status</div>
         <div class="v gold" id="statStatus">Genuine</div>
       </div>
-      <div class="stat">
-        <div class="k" data-i18n="s_count_k">Verification Count</div>
-        <div class="v" id="statCount">1st time</div>
-      </div>
       <div class="stat wide">
         <div class="k" data-i18n="s_time_k">Verification Time</div>
         <div class="v" id="statTime">----</div>
@@ -254,7 +249,6 @@
       r_kicker:'Verification Result',
       r_title:'Genuine Product Verified',
       s_status_k:'Verification Status',
-      s_count_k:'Verification Count',
       s_time_k:'Verification Time',
       tips:'<b>Security Tip:</b> Only this page is valid for verification. Do not trust any other link claiming to be official.',
       copyright:'© 2025 PulseOne. All rights reserved.',
@@ -265,7 +259,6 @@
       r_kicker:'验证结果',
       r_title:'正品验证通过',
       s_status_k:'验证状态',
-      s_count_k:'当前验证',
       s_time_k:'验证时间',
       tips:'<b>防伪提示:</b>正品验证仅以本页面为准。请勿相信其他任何自称官方的验证链接。',
       copyright:'© 2025 PulseOne 版权所有',
@@ -276,7 +269,6 @@
       r_kicker:'Resultado da Verificação',
       r_title:'Produto Autêntico Verificado',
       s_status_k:'Status da Verificação',
-      s_count_k:'Nº de Verificações',
       s_time_k:'Hora da Verificação',
       tips:'<b>Dica de Segurança:</b> A verificação é válida somente nesta página. Não confie em outros links que se apresentem como oficiais.',
       copyright:'© 2025 PulseOne. Todos os direitos reservados.',
@@ -322,25 +314,6 @@
     })(langBtns[bi]);
   }
 
-  /* ---------------- 防伪码解析 ---------------- */
-  function normalize(s){
-    return (s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
-  }
-  function pretty(s){
-    var t = normalize(s);
-    return t.replace(/(.{4})(?=.)/g,'$1-');
-  }
-  function valid(s){
-    return /^[A-Z0-9]{16}$/.test(normalize(s));
-  }
-
-  var DEMO_SN = 'P1A2-9F4K-7Q3M-5T8X';
-
-  /* 英文序数 1st/2nd/3rd… */
-  function ordinal(n){
-    var s=['th','st','nd','rd'], v=n%100;
-    return n + (s[(v-20)%10]||s[v]||s[0]);
-  }
   /* 各语言时间格式 */
   function formatTime(l, d){
     var pad = function(n){ return (n<10?'0':'')+n; };
@@ -351,39 +324,13 @@
   }
 
   function renderResult(){
-    var urlSn = normalize(p.get('sn'));
-    var sn = pretty(valid(urlSn) ? urlSn : DEMO_SN);
-
-    // 用防伪码做确定性伪随机,模拟查询次数(演示逻辑;接后端后替换为真实数据)
-    function seedHash(s){
-      var h = 0;
-      for (var i=0;i<s.length;i++){ h = (h*31 + s.charCodeAt(i)) >>> 0; }
-      return h;
-    }
-    var scanCount = 1 + (seedHash(sn) % 6);
-    var isFirst = scanCount === 1;
-
+    // 状态文案:始终显示正品确认
     var statusLine = document.getElementById('statusLine');
-    if (isFirst) {
-      statusLine.innerHTML = LANG==='en' ? 'This product has been verified against the PULSEONE official database and <b>confirmed as genuine</b>. You can use it with confidence.'
-        : LANG==='zh' ? '该产品经 PULSEONE 官方数据库核验,<b>确认为品牌正品</b>,请放心使用。'
-        : 'Este produto foi verificado no banco de dados oficial da PULSEONE e <b>confirmado como autêntico</b>. Você pode usá-lo com confiança.';
-    } else {
-      if (LANG==='en') {
-        statusLine.innerHTML = 'This product has been verified against the PULSEONE official database and <b>confirmed as genuine</b>.<br>' +
-          'This code has been verified <b class="warn">'+(scanCount-1)+'</b> times before; this is the <b>'+ordinal(scanCount)+'</b> check. Please confirm the product source.';
-      } else if (LANG==='zh') {
-        statusLine.innerHTML = '该产品经 PULSEONE 官方数据库核验,<b>确认为品牌正品</b>。<br>' +
-          '该编码此前已被验证 <b class="warn">'+(scanCount-1)+'</b> 次,当前为第 <b>'+scanCount+'</b> 次查询,请确认产品来源。';
-      } else {
-        statusLine.innerHTML = 'Este produto foi verificado no banco de dados oficial da PULSEONE e <b>confirmado como autêntico</b>.<br>' +
-          'Este código já foi verificado <b class="warn">'+(scanCount-1)+'</b> '+(scanCount-1===1?'vez':'vezes')+'; esta é a <b>'+scanCount+'ª</b> consulta. Verifique a origem do produto.';
-      }
-    }
+    statusLine.innerHTML = LANG==='en' ? 'This product has been verified against the PULSEONE official database and <b>confirmed as genuine</b>. You can use it with confidence.'
+      : LANG==='zh' ? '该产品经 PULSEONE 官方数据库核验,<b>确认为品牌正品</b>,请放心使用。'
+      : 'Este produto foi verificado no banco de dados oficial da PULSEONE e <b>confirmado como autêntico</b>. Você pode usá-lo com confiança.';
 
     document.getElementById('statStatus').textContent = LANG==='zh' ? '正品' : (LANG==='pt' ? 'Autêntico' : 'Genuine');
-    document.getElementById('statCount').textContent =
-      LANG==='zh' ? '第 '+scanCount+' 次' : (LANG==='pt' ? scanCount+'ª vez' : ordinal(scanCount)+' time');
     document.getElementById('statTime').textContent = formatTime(LANG, new Date());
   }
 
