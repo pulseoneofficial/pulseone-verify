@@ -116,6 +116,14 @@
   .status-line b{color:var(--ok);font-weight:600}
   .status-line b.warn{color:#fbbf24}
 
+  .sn-badge{
+    margin:22px auto 0;display:inline-flex;align-items:center;gap:8px;
+    font-family:'JetBrains Mono',monospace;font-size:16px;letter-spacing:.18em;color:var(--gold-soft);
+    border:1px dashed rgba(201,161,90,.4);background:rgba(201,161,90,.05);
+    padding:12px 22px;border-radius:10px;
+  }
+  .sn-badge .lbl{font-family:'Inter';font-size:10px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+
   /* 通用验证统计 */
   .stats{
     margin:18px auto 0;max-width:460px;display:grid;grid-template-columns:1fr 1fr;gap:12px;
@@ -208,6 +216,11 @@
     <div class="status-kicker" data-i18n="r_kicker">Verification Result</div>
     <h1 data-i18n="r_title">Genuine Product Verified</h1>
     <div class="status-line" id="statusLine"></div>
+
+    <div class="sn-badge">
+      <span class="lbl">SN</span>
+      <span id="snText">----</span>
+    </div>
 
     <div class="stats">
       <div class="stat">
@@ -362,6 +375,9 @@
     }
     var scanCount = 1 + (seedHash(sn) % 6);
     var isFirst = scanCount === 1;
+
+    // 显示防伪码(SN)
+    document.getElementById('snText').textContent = sn;
 
     var statusLine = document.getElementById('statusLine');
     if (isFirst) {
