@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0f">
+<meta name="description" content="PULSEONE Official Anti-Counterfeit Verification Platform">
+<title>PULSEONE Verification · Anti-Counterfeit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0f;
+    --bg2:#0e0e16;
+    --card:#12121d;
+    --card2:#161627;
+    --gold:#c9a15a;
+    --gold-soft:#e8cf9a;
+    --gold-grad:linear-gradient(135deg,#8a6a2f 0%,#c9a15a 35%,#f0d9a0 55%,#c9a15a 75%,#8a6a2f 100%);
+    --txt:#eae6dc;
+    --muted:#8d8a80;
+    --line:rgba(201,161,90,.16);
+    --ok:#34d399;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{min-height:100%}
+  body{
+    background:
+      radial-gradient(1100px 500px at 85% -10%, rgba(201,161,90,.10), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(201,161,90,.07), transparent 60%),
+      var(--bg);
+    color:var(--txt);
+    font-family:'Inter','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:48px;
+  }
+  .topline{height:3px;background:var(--gold-grad);background-size:200% 100%;animation:sheen 6s linear infinite}
+  @keyframes sheen{0%{background-position:0% 0}100%{background-position:200% 0}}
+
+  .wrap{max-width:720px;margin:0 auto;padding:0 20px}
+
+  /* 品牌头 */
+  header{display:flex;align-items:center;justify-content:space-between;padding:22px 0 8px;gap:12px}
+  .brand{display:flex;align-items:center;gap:12px;min-width:0}
+  .brand-mark{width:38px;height:38px;flex:none}
+  .brand-mark svg{width:100%;height:100%}
+  .brand-name{font-family:'Cinzel',serif;font-weight:700;letter-spacing:.28em;font-size:17px;color:var(--gold-soft);text-transform:uppercase;white-space:nowrap}
+  .brand-sub{font-size:10px;letter-spacing:.34em;color:var(--muted);text-transform:uppercase;margin-top:1px;white-space:nowrap}
+
+  /* 语言切换器 */
+  .langs{flex:none;display:flex;gap:3px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:100px;padding:3px}
+  .lang-btn{
+    border:none;background:transparent;color:var(--muted);
+    font-size:11px;font-weight:600;letter-spacing:.06em;
+    padding:6px 11px;border-radius:100px;cursor:pointer;transition:all .2s;font-family:inherit;
+  }
+  .lang-btn:hover{color:var(--gold-soft)}
+  .lang-btn.active{background:var(--gold-grad);color:#14100a}
+
+  /* 结果卡 */
+  .result{
+    margin-top:20px;position:relative;overflow:hidden;
+    background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:44px 24px 38px;
+    text-align:center;
+  }
+  .result::before{
+    content:"";position:absolute;inset:0 0 auto 0;height:1px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  }
+  .result::after{
+    content:"";position:absolute;top:-60px;left:50%;transform:translateX(-50%);
+    width:340px;height:120px;background:radial-gradient(closest-side,rgba(201,161,90,.18),transparent);
+    pointer-events:none;
+  }
+  .seal{position:relative;width:118px;height:118px;margin:0 auto 18px}
+  .seal-ring{
+    position:absolute;inset:0;border-radius:50%;
+    border:1px solid rgba(201,161,90,.35);
+    animation:pulseRing 2.6s ease-out infinite;
+  }
+  .seal-ring.r2{animation-delay:1.3s}
+  @keyframes pulseRing{
+    0%{transform:scale(.85);opacity:.9}
+    100%{transform:scale(1.5);opacity:0}
+  }
+  .seal-core{
+    position:absolute;inset:14px;border-radius:50%;
+    background:radial-gradient(circle at 32% 28%, #1d1d2e, #10101a 70%);
+    border:1px solid var(--gold);
+    box-shadow:0 0 34px rgba(201,161,90,.28), inset 0 0 22px rgba(201,161,90,.12);
+    display:flex;align-items:center;justify-content:center;
+    animation:sealIn .8s cubic-bezier(.2,1.4,.4,1) both;
+  }
+  @keyframes sealIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+  .seal-core svg{width:52%;height:52%}
+  .seal-check{
+    position:absolute;inset:0;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    animation:checkPop .5s .55s cubic-bezier(.2,1.6,.4,1) both;
+  }
+  @keyframes checkPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+
+  .status-kicker{font-size:11px;letter-spacing:.42em;color:var(--gold);text-transform:uppercase;margin-bottom:8px}
+  h1{
+    font-size:30px;font-weight:600;letter-spacing:.06em;color:#fff;
+    background:linear-gradient(180deg,#fff,var(--gold-soft));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    text-shadow:0 0 40px rgba(201,161,90,.25);
+  }
+  .status-line{margin-top:12px;font-size:14px;color:var(--muted);max-width:460px;margin-left:auto;margin-right:auto}
+  .status-line b{color:var(--ok);font-weight:600}
+  .status-line b.warn{color:#fbbf24}
+
+  /* 通用验证统计 */
+  .stats{
+    margin:18px auto 0;max-width:460px;display:grid;grid-template-columns:1fr 1fr;gap:12px;
+  }
+  .stat{
+    background:rgba(255,255,255,.025);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:14px;padding:14px 16px;
+  }
+  .stat .k{font-size:10.5px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
+  .stat .v{font-size:14.5px;color:var(--txt);font-weight:500}
+  .stat .v.gold{color:var(--gold-soft)}
+  .stat.wide{grid-column:1/-1}
+
+  /* 安全提示 */
+  .tips{margin-top:18px;display:flex;gap:12px;padding:16px 18px;border:1px solid rgba(52,211,153,.22);border-radius:16px;background:rgba(52,211,153,.05)}
+  .tips svg{flex:none;margin-top:2px}
+  .tips p{font-size:13px;color:#b9b6ac}
+  .tips p b{color:var(--ok)}
+
+  .hidden{display:none!important}
+
+  footer{margin-top:30px;text-align:center;font-size:11.5px;color:#5f5c54;letter-spacing:.06em}
+  footer .f-brand{font-family:'Cinzel',serif;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;font-size:12px}
+  footer .f-line{margin:8px 0 4px;height:1px;width:60px;margin-left:auto;margin-right:auto;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  .footnote{font-size:10px;color:#4c4a44;margin-top:6px;letter-spacing:.08em}
+
+  @media(max-width:520px){
+    .brand-name{letter-spacing:.18em;font-size:15px}
+    h1{font-size:25px}
+    .stats{grid-template-columns:1fr}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="topline"></div>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 48 48" fill="none">
+          <defs>
+            <linearGradient id="gmark" x1="0" y1="0" x2="48" y2="48">
+              <stop offset="0" stop-color="#e8cf9a"/><stop offset="1" stop-color="#a8813c"/>
+            </linearGradient>
+          </defs>
+          <rect x="2" y="2" width="44" height="44" rx="12" stroke="url(#gmark)" stroke-width="2"/>
+          <polyline points="8,26 16,26 20,18 26,34 30,24 34,24 40,24" stroke="url(#gmark)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">PulseOne</div>
+        <div class="brand-sub">Authentic · Genuine</div>
+      </div>
+    </div>
+    <div class="langs" id="langs">
+      <button class="lang-btn" data-lang="en" type="button">EN</button>
+      <button class="lang-btn" data-lang="zh" type="button">中文</button>
+      <button class="lang-btn" data-lang="pt" type="button">PT</button>
+    </div>
+  </header>
+
+  <!-- 验证结果(打开即显示正品) -->
+  <section class="result" id="resultView">
+    <div class="seal">
+      <div class="seal-ring"></div>
+      <div class="seal-ring r2"></div>
+      <div class="seal-core">
+        <svg viewBox="0 0 48 48" fill="none">
+          <polyline points="10,26 18,26 22,17 27,33 31,23 38,23" stroke="url(#gmark)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="seal-check">
+        <svg viewBox="0 0 64 64" width="118" height="118" fill="none">
+          <defs>
+            <linearGradient id="gok" x1="0" y1="0" x2="64" y2="64">
+              <stop offset="0" stop-color="#5eead4"/><stop offset="1" stop-color="#10b981"/>
+            </linearGradient>
+          </defs>
+          <circle cx="32" cy="32" r="30" fill="rgba(16,185,129,.10)" stroke="url(#gok)" stroke-width="2"/>
+          <path d="M20 33.5l8.5 8L44 25.5" stroke="url(#gok)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="status-kicker" data-i18n="r_kicker">Verification Result</div>
+    <h1 data-i18n="r_title">Genuine Product Verified</h1>
+    <div class="status-line" id="statusLine"></div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="k" data-i18n="s_status_k">Verification Status</div>
+        <div class="v gold" id="statStatus">Genuine</div>
+      </div>
+      <div class="stat">
+        <div class="k" data-i18n="s_count_k">Verification Count</div>
+        <div class="v" id="statCount">1st time</div>
+      </div>
+      <div class="stat wide">
+        <div class="k" data-i18n="s_time_k">Verification Time</div>
+        <div class="v" id="statTime">----</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 安全提示 -->
+  <div class="tips" id="tipsView">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <path d="M12 2l8 3.5v5.2c0 5-3.4 9.6-8 11.3-4.6-1.7-8-6.3-8-11.3V5.5L12 2z" stroke="#34d399" stroke-width="1.6" fill="rgba(52,211,153,.08)"/>
+      <path d="M12 7.5v5" stroke="#34d399" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="12" cy="16.2" r="1" fill="#34d399"/>
+    </svg>
+    <p data-i18n="tips"><b>Security Tip:</b> Only this page is valid for verification. Do not trust any other link claiming to be official.</p>
+  </div>
+
+  <footer>
+    <div class="f-brand">PulseOne · Official</div>
+    <div class="f-line"></div>
+    <div data-i18n="copyright">© 2025 PulseOne. All rights reserved.</div>
+    <div class="footnote" data-i18n="footnote">Issued by the PULSEONE Security Platform · Do not share your security code</div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var p = new URLSearchParams(location.search);
+
+  /* ---------------- 国际化 ---------------- */
+  var I18N = {
+    en: {
+      doc_title:'PULSEONE Verification · Anti-Counterfeit',
+      r_kicker:'Verification Result',
+      r_title:'Genuine Product Verified',
+      s_status_k:'Verification Status',
+      s_count_k:'Verification Count',
+      s_time_k:'Verification Time',
+      tips:'<b>Security Tip:</b> Only this page is valid for verification. Do not trust any other link claiming to be official.',
+      copyright:'© 2025 PulseOne. All rights reserved.',
+      footnote:'Issued by the PULSEONE Security Platform · Do not share your security code'
+    },
+    zh: {
+      doc_title:'PULSEONE 正品验证 · 防伪溯源',
+      r_kicker:'验证结果',
+      r_title:'正品验证通过',
+      s_status_k:'验证状态',
+      s_count_k:'当前验证',
+      s_time_k:'验证时间',
+      tips:'<b>防伪提示:</b>正品验证仅以本页面为准。请勿相信其他任何自称官方的验证链接。',
+      copyright:'© 2025 PulseOne 版权所有',
+      footnote:'本页由 PULSEONE 安全平台签发 · 请勿外泄防伪编码'
+    },
+    pt: {
+      doc_title:'PULSEONE Verificação · Anti-Falsificação',
+      r_kicker:'Resultado da Verificação',
+      r_title:'Produto Autêntico Verificado',
+      s_status_k:'Status da Verificação',
+      s_count_k:'Nº de Verificações',
+      s_time_k:'Hora da Verificação',
+      tips:'<b>Dica de Segurança:</b> A verificação é válida somente nesta página. Não confie em outros links que se apresentem como oficiais.',
+      copyright:'© 2025 PulseOne. Todos os direitos reservados.',
+      footnote:'Emitido pela Plataforma de Segurança PULSEONE · Não compartilhe seu código de segurança'
+    }
+  };
+
+  /* 语言: URL ?lang= > localStorage > 默认英语 */
+  var SUPPORTED = ['en','zh','pt'];
+  var LANG = 'en';
+  var urlLang = p.get('lang');
+  var stored = null;
+  try { stored = localStorage.getItem('pulseone_lang'); } catch(e){}
+  if (SUPPORTED.indexOf(urlLang) >= 0) LANG = urlLang;
+  else if (SUPPORTED.indexOf(stored) >= 0) LANG = stored;
+
+  function t(key){ return (I18N[LANG] && I18N[LANG][key]) || key; }
+
+  function applyStatic(){
+    var i;
+    var els = document.querySelectorAll('[data-i18n]');
+    for (i=0;i<els.length;i++){ els[i].innerHTML = t(els[i].getAttribute('data-i18n')); }
+    document.title = t('doc_title');
+    document.documentElement.lang = LANG;
+    var btns = document.querySelectorAll('.lang-btn');
+    for (i=0;i<btns.length;i++){
+      btns[i].classList.toggle('active', btns[i].getAttribute('data-lang') === LANG);
+    }
+  }
+
+  function setLang(l){
+    if (SUPPORTED.indexOf(l) < 0) return;
+    LANG = l;
+    try { localStorage.setItem('pulseone_lang', l); } catch(e){}
+    applyStatic();
+    renderResult(); // 重新渲染动态内容
+  }
+
+  var langBtns = document.querySelectorAll('.lang-btn');
+  for (var bi=0; bi<langBtns.length; bi++){
+    (function(btn){
+      btn.addEventListener('click', function(){ setLang(btn.getAttribute('data-lang')); });
+    })(langBtns[bi]);
+  }
+
+  /* ---------------- 防伪码解析 ---------------- */
+  function normalize(s){
+    return (s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  }
+  function pretty(s){
+    var t = normalize(s);
+    return t.replace(/(.{4})(?=.)/g,'$1-');
+  }
+  function valid(s){
+    return /^[A-Z0-9]{16}$/.test(normalize(s));
+  }
+
+  var DEMO_SN = 'P1A2-9F4K-7Q3M-5T8X';
+
+  /* 英文序数 1st/2nd/3rd… */
+  function ordinal(n){
+    var s=['th','st','nd','rd'], v=n%100;
+    return n + (s[(v-20)%10]||s[v]||s[0]);
+  }
+  /* 各语言时间格式 */
+  function formatTime(l, d){
+    var pad = function(n){ return (n<10?'0':'')+n; };
+    if (l==='zh') return d.getFullYear()+'.'+pad(d.getMonth()+1)+'.'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
+    if (l==='pt') return pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear()+' '+pad(d.getHours())+':'+pad(d.getMinutes());
+    var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return MON[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear()+' '+pad(d.getHours())+':'+pad(d.getMinutes());
+  }
+
+  function renderResult(){
+    var urlSn = normalize(p.get('sn'));
+    var sn = pretty(valid(urlSn) ? urlSn : DEMO_SN);
+
+    // 用防伪码做确定性伪随机,模拟查询次数(演示逻辑;接后端后替换为真实数据)
+    function seedHash(s){
+      var h = 0;
+      for (var i=0;i<s.length;i++){ h = (h*31 + s.charCodeAt(i)) >>> 0; }
+      return h;
+    }
+    var scanCount = 1 + (seedHash(sn) % 6);
+    var isFirst = scanCount === 1;
+
+    var statusLine = document.getElementById('statusLine');
+    if (isFirst) {
+      statusLine.innerHTML = LANG==='en' ? 'This product has been verified against the PULSEONE official database and <b>confirmed as genuine</b>. You can use it with confidence.'
+        : LANG==='zh' ? '该产品经 PULSEONE 官方数据库核验,<b>确认为品牌正品</b>,请放心使用。'
+        : 'Este produto foi verificado no banco de dados oficial da PULSEONE e <b>confirmado como autêntico</b>. Você pode usá-lo com confiança.';
+    } else {
+      if (LANG==='en') {
+        statusLine.innerHTML = 'This product has been verified against the PULSEONE official database and <b>confirmed as genuine</b>.<br>' +
+          'This code has been verified <b class="warn">'+(scanCount-1)+'</b> times before; this is the <b>'+ordinal(scanCount)+'</b> check. Please confirm the product source.';
+      } else if (LANG==='zh') {
+        statusLine.innerHTML = '该产品经 PULSEONE 官方数据库核验,<b>确认为品牌正品</b>。<br>' +
+          '该编码此前已被验证 <b class="warn">'+(scanCount-1)+'</b> 次,当前为第 <b>'+scanCount+'</b> 次查询,请确认产品来源。';
+      } else {
+        statusLine.innerHTML = 'Este produto foi verificado no banco de dados oficial da PULSEONE e <b>confirmado como autêntico</b>.<br>' +
+          'Este código já foi verificado <b class="warn">'+(scanCount-1)+'</b> '+(scanCount-1===1?'vez':'vezes')+'; esta é a <b>'+scanCount+'ª</b> consulta. Verifique a origem do produto.';
+      }
+    }
+
+    document.getElementById('statStatus').textContent = LANG==='zh' ? '正品' : (LANG==='pt' ? 'Autêntico' : 'Genuine');
+    document.getElementById('statCount').textContent =
+      LANG==='zh' ? '第 '+scanCount+' 次' : (LANG==='pt' ? scanCount+'ª vez' : ordinal(scanCount)+' time');
+    document.getElementById('statTime').textContent = formatTime(LANG, new Date());
+  }
+
+  /* ---------------- 初始化:打开即显示正品 ---------------- */
+  applyStatic();
+  renderResult();
+})();
+</script>
+</body>
+</html>
